@@ -1,22 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script>
-  function search() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (xhttp.readyState === 4) {
-        var json = $.parseJSON(xhttp.responseText);
-        console.log(json )
-        var myElement = document.getElementById('response_placeholder').innerHTML = json.category;
-      }
-    }
-    xhttp.da
-    xhttp.open("GET", '{{ url_for("search") }}?domain='+$("#form_domain").val()+'&description='+$("#form_description").val(), true)
-    xhttp.send()
-    
-  }
-  </script>
 
 <section class="jumbotron text-center">
     <div class="container">
@@ -24,5 +8,91 @@
       <p class="lead text-muted"> Food image ranking using deep learning</p>
     </div>
 </section>
+
+
+<form enctype="multipart/form-data">
+  <div class="form-row">
+      <div class="form-group col-md-2">
+        <input id="inp_file" type="file" >
+        <input id="inp_img" name="image" type="hidden" value="">
+      </div>
+  </div>
+</form>
+<input class="btn btn-primary" type="submit" onclick="search();" value="Search">
+
+<div class="img_row"> 
+{% for i in range(3) %}
+<div class="img_column">
+  {% for j in range(2) %} 
+  <img src="" style="width:100%" id="img_{{2*i+j}}">
+  {% endfor %}
+</div>
+{% endfor %}
+</div>
+
+
+<script>
+  document.getElementById('inp_file').validity.valid
+  document.getElementById('inp_file').addEventListener('change', fileChange, false);
+  function fileChange(e) {
+      document.getElementById('inp_img').value = '';
+      var file = e.target.files[0];
+       if (file.type == "image/jpeg" || file.type == "image/png") {
+           var reader = new FileReader();  
+           reader.onload = function(readerEvent) {
+               var image = new Image();
+               image.onload = function(imageEvent) {   
+
+/*                    var w = image.width;
+                   var h = image.height; */
+
+                   //resnet size
+                   h = 224
+                   w = 224
+
+                   var canvas = document.createElement('canvas');
+                   canvas.width = w;
+                   canvas.height = h;
+                   canvas.getContext('2d').drawImage(image, 0, 0, w, h);
+                   
+                   if (file.type == "image/jpeg") {
+                       var dataURL = canvas.toDataURL("image/jpeg", 1.0);
+                   } else {
+                       var dataURL = canvas.toDataURL("image/png"); 
+                   }
+                   document.getElementById('inp_img').value = dataURL;
+               }
+               image.src = readerEvent.target.result;
+           }
+           reader.readAsDataURL(file);
+       } else {
+           document.getElementById('inp_file').value = '';
+           alert('Please only select images in JPG- or PNG-format.');  
+       }
+  }
+
+
+  function search() {
+    
+    resized_file=document.getElementById('inp_img').value
+    var fd = new FormData($('form')[0]);
+    fd.append("image", resized_file);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState === 4) {
+        var json = $.parseJSON(xhttp.responseText);
+        for (index = 0; index < json.urls.length; index++) { 
+          document.getElementById('img_'+index).src=json.urls[index]
+        } 
+      }
+    }
+    xhttp.open("POST", '{{ url_for("search") }}', true)
+    xhttp.send(fd)
+  }
+</script>
+
+
+
 
 {% endblock %}
