@@ -5,9 +5,13 @@ from starlette.responses import PlainTextResponse, RedirectResponse,JSONResponse
 from PIL import Image
 import io
 import base64
+from app.extractor import extractor, ann_index
+from starlette.responses import FileResponse
+from starlette.staticfiles import StaticFiles
 
 
 templates = Jinja2Templates(directory='app/templates')
+app.mount('/static', StaticFiles(directory='app/static'), name='static')
 
 @app.route('/',methods=['GET'])
 async def homepage(request):
@@ -23,16 +27,11 @@ async def search(request):
     image_encoded = content.split(',')[1]
     image_bytes = base64.decodebytes(image_encoded.encode('utf-8'))
     image = Image.open(io.BytesIO(image_bytes))
-
-    # get image features
-    # get similar images
+    embedding = extractor.get_embeddings(image)
+    result_ids = ann_index.get_nns_by_vector(embedding, 9)
+    urls = [f'https://deepfood.s3-us-west-2.amazonaws.com/ifood/{i}.jpg' for i in result_ids]
     
-    result = {'urls':['https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg',
-                      'https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg',
-                      'https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg',
-                      'https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg',
-                      'https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg',
-                      'https://deepfood.s3-us-west-2.amazonaws.com/ifood/train_120206.jpg']}
+    result = {'urls':urls}
 
     return JSONResponse(result)
 
@@ -56,3 +55,6 @@ async def server_error(request, exc):
     context = {"request": request}
     return templates.TemplateResponse(template, context, status_code=500)
 
+#@app.route('/favicon.ico',methods=['GET'])
+#async def favicon(request):
+#    return FileResponse('static/favicon.ico')

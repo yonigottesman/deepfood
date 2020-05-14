@@ -7,7 +7,9 @@
       <h1>DeepFood</h1>
       <p class="lead text-muted"> Food image ranking using deep learning</p>
     </div>
+    <a href="https://github.com/yonigottesman/deepfood" style="color:black"><i class="fab fa-github-square" style="font-size:48px"></i></a>
 </section>
+
 
 
 <form enctype="multipart/form-data">
@@ -30,6 +32,8 @@
 {% endfor %}
 </div>
 
+<br>
+<br>
 
 <script>
   document.getElementById('inp_file').validity.valid
@@ -42,9 +46,6 @@
            reader.onload = function(readerEvent) {
                var image = new Image();
                image.onload = function(imageEvent) {   
-
-/*                    var w = image.width;
-                   var h = image.height; */
 
                    //resnet size
                    h = 224
