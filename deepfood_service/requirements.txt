@@ -1,5 +1,5 @@
 aiofiles==0.5.0
-annoy==1.16.3
+
 certifi==2020.4.5.1
 chardet==3.0.4
 click==7.1.1
@@ -12,11 +12,8 @@ MarkupSafe==1.1.1
 numpy==1.18.4
 Pillow==7.0.0
 python-multipart==0.0.5
-requests==2.23.0
 six==1.14.0
 starlette==0.13.2
-torch==1.5.0
-torchvision==0.6.0
 urllib3==1.25.9
 uvicorn==0.11.3
 uvloop==0.14.0
