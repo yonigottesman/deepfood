@@ -2,3 +2,7 @@
 .elasticbeanstalk/*
 .git
 .gitignore
+venv
+.history
+.vscode
+__pycache__

@@ -5,7 +5,7 @@ from starlette.responses import PlainTextResponse, RedirectResponse,JSONResponse
 from PIL import Image
 import io
 import base64
-#from app.extractor import extractor, ann_index
+from app.extractor import extractor, ann_index
 from starlette.responses import FileResponse
 from starlette.staticfiles import StaticFiles
 
@@ -27,8 +27,8 @@ async def search(request):
     image_encoded = content.split(',')[1]
     image_bytes = base64.decodebytes(image_encoded.encode('utf-8'))
     image = Image.open(io.BytesIO(image_bytes))
-    #embedding = extractor.get_embeddings(image)
-    result_ids = [1,2,3,4] #ann_index.get_nns_by_vector(embedding, 9)
+    embedding = extractor.get_embeddings(image)
+    result_ids = ann_index.get_nns_by_vector(embedding, 9)
     urls = [f'https://deepfood.s3-us-west-2.amazonaws.com/ifood/{i}.jpg' for i in result_ids]
     
     result = {'urls':urls}
