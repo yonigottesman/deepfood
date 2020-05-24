@@ -7,7 +7,6 @@
       <h1>DeepFood</h1>
       <p class="lead text-muted"> Food image ranking using deep learning</p>
     </div>
-    <a href="https://github.com/yonigottesman/deepfood" style="color:black"><i class="fab fa-github-square" style="font-size:48px"></i></a>
 </section>
 
 
@@ -15,6 +14,7 @@
 <form enctype="multipart/form-data">
   <div class="form-row">
       <div class="form-group col-md-2">
+        <label for="inp_file">Upload picture of Food</label>
         <input id="inp_file" type="file" >
         <input id="inp_img" name="image" type="hidden" value="">
       </div>
@@ -46,16 +46,12 @@
            reader.onload = function(readerEvent) {
                var image = new Image();
                image.onload = function(imageEvent) {   
-
-                   //resnet size
                    h = 224
                    w = 224
-
                    var canvas = document.createElement('canvas');
                    canvas.width = w;
                    canvas.height = h;
                    canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-                   
                    if (file.type == "image/jpeg") {
                        var dataURL = canvas.toDataURL("image/jpeg", 1.0);
                    } else {

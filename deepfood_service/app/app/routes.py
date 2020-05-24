@@ -19,7 +19,7 @@ async def homepage(request):
                                                      'categorizer':'Product'})
 
   
-@app.route('/product/search',methods=['GET','POST'])
+@app.route('/search',methods=['POST'])
 async def search(request):
     data = await request.form()
     
@@ -28,7 +28,7 @@ async def search(request):
     image_bytes = base64.decodebytes(image_encoded.encode('utf-8'))
     image = Image.open(io.BytesIO(image_bytes))
     embedding = extractor.get_embeddings(image)
-    result_ids = ann_index.get_nns_by_vector(embedding, 9)
+    result_ids = ann_index.get_nns_by_vector(embedding, 6)
     urls = [f'https://deepfood.s3-us-west-2.amazonaws.com/ifood/{i}.jpg' for i in result_ids]
     
     result = {'urls':urls}
