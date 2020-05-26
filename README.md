@@ -8,7 +8,7 @@ System Arcitecture
 Project Structure
 --
 #### Starlette web app
-Web application that receives an image from user and return most similar images from index.
+[Web application](https://github.com/yonigottesman/deepfood/tree/master/deepfood_service) that receives an image from user and return most similar images from index.
 
 #### Training and Indexing Scripts
 - [Notebook](https://github.com/yonigottesman/deepfood/blob/master/notebooks/train_model.ipynb) that fine tunes resnet34 pretrained model on food images.
