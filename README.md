@@ -3,4 +3,4 @@ link to blog [https://yonigottesman.github.io/2020/05/15/deep-search-aws.html](h
 
 System Arcitecture
 --
-![arch](https://github.com/yonigottesman/deepfood/images/image_search_arch.png)
+![](https://github.com/yonigottesman/deepfood/blob/master/images/image_search_arch.png)
