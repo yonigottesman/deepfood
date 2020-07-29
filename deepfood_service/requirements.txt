@@ -18,6 +18,6 @@ starlette==0.13.2
 torch==1.5.0
 torchvision==0.6.0
 urllib3==1.25.9
-uvicorn==0.11.3
+uvicorn==0.11.7
 uvloop==0.14.0
 websockets==8.1
